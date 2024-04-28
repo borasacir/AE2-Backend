@@ -45,9 +45,9 @@ public class ModpackController {
         return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     
-    @GetMapping("/{itemId}")
-    public ResponseEntity<Modpacks> getTypeById(@PathVariable String itemId) {
-        Optional<Modpacks> item = modpackService.getModpackById(itemId);
+    @GetMapping("/{typeId}")
+    public ResponseEntity<Modpacks> getTypeById(@PathVariable String typeId) {
+        Optional<Modpacks> item = modpackService.getModpackById(typeId);
         return item.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
