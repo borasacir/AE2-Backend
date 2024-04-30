@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ModpackRepository extends MongoRepository<Modpacks, String> {
-	@Query("{'items.title': {?0, $options: 'i'}}")
+	@Query("{'items.title': {$regex: ?0, $options: 'i'}}")  //{?0, $options: 'i'}
 	List<Modpacks> findByItemTitleContaining(String title);
 
 	@Query("{'items._id': ?0}")

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ModpackService {
@@ -22,9 +23,12 @@ public class ModpackService {
         return modpackRepository.findAll();
     }
 
-    public Optional<Item> searchModpacksByItemTitle(String title) {
-    	List<Modpacks> modpacks = modpackRepository.findByItemTitleContaining(title);
-    	return modpacks.stream().flatMap(modpack->modpack.getItems().stream()).filter(item->item.getTitle().contains(title)).findAny();
+    public List<Item> searchModpacksByItemTitle(String title) {
+        List<Modpacks> modpacks = modpackRepository.findByItemTitleContaining(title);
+        return modpacks.stream()
+                      .flatMap(modpack -> modpack.getItems().stream())
+                      .filter(item -> item.getTitle().contains(title))
+                      .collect(Collectors.toList());
     }
     
     public Optional<Item> getItemById(String itemId) {

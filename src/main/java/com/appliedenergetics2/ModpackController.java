@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ import com.appliedenergetics2.service.ModpackService;
 
 @SuppressWarnings("unused")
 @RestController
-@RequestMapping("/api/modpacks")
+@RequestMapping("/api/index")
 public class ModpackController {
 
     @Autowired
@@ -34,9 +35,13 @@ public class ModpackController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Item> searchModpacks(@RequestParam String title) {
-        Optional<Item> item = modpackService.searchModpacksByItemTitle(title);
-        return item.map(ResponseEntity::ok).orElseGet(() ->ResponseEntity.notFound().build());
+    public ResponseEntity<List<Item>> searchModpacks(@RequestParam String title) {
+        List<Item> items = modpackService.searchModpacksByItemTitle(title);
+        if (!items.isEmpty()) {
+            return ResponseEntity.ok(items);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @GetMapping("/item/{itemId}")
